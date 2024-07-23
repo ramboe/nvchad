@@ -32,12 +32,12 @@ require("lazy").setup({
 }, lazy_config)
 
 require("nvim-tree").setup {
-  diagnostigs = {
-    enable = true,
+  diagnostics = {
+    enable = true
   },
   view = {
     -- side = 'right',
-    side = "right",
+    side = "left",
     width = 45,
   },
 }

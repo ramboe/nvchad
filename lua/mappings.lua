@@ -42,6 +42,10 @@ map("n", "<leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
 map("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
 map("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
 
+-- map("n", "<leader>e", "<cmd>NvimTreeFindFile<CR>", opts)
+-- map("n", "<A-^[OP>", "<cmd>NvimTreeFindFile<CR>", opts)
+map("n", "<A-a>", "<cmd>NvimTreeFindFile<CR>", opts)
+
 map("n", ";", ":", { desc = "CMD enter command mode" })
 
 -- Add a keymap for Shift+Tab to switch to the previous buffer
