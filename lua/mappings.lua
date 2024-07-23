@@ -3,264 +3,76 @@ require "nvchad.mappings"
 -- add yours here
 
 local map = vim.keymap.set
+local opts = { noremap = true, silent = true }
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
 
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
+--
 
-local M = {}
+-- map("n", "<leader>ff", "^vf{%j%V", { desc = "highlight function with body" })
 
--- M.general = {
---   i = {},
---
---   n = {
---     ["U"] = { "<C-r>", "Undo" },
---
---     ["l"] = { "o<ESC>", "newline after cursor" },
---     ["L"] = { "O<ESC>", "newline before cursor" },
---
---     ["<C-left>"] = { "<C-w>h", "window left" },
---     ["<C-right>"] = { "<C-w>l", "window right" },
---     ["<C-down>"] = { "<C-w>j", "window down" },
---     ["<C-up>"] = { "<C-w>k", "window up" },
---
---     ["<leader>q"] = { "<cmd>q<cr>", "quit focused window" },
---     ["<leader>x"] = { "<cmd>bd<cr>", "close current buffer" },
---   },
---
---   t = {
---     ["<C-x>"] = { vim.api.nvim_replace_termcodes("<C-\\><C-N>", true, true, true), "escape terminal mode" },
---     ["<C-d>"] = { '<cmd>echo "Use Toggle!"<cr>', "disable killing terminal" },
---   },
--- }
+-- Define a Lua function to highlight the C# method
+function HighlightCSharpMethod()
+  -- Jump to the beginning of the line
+  -- vim.api.nvim_input('^vf{%j%V')
+  vim.api.nvim_input "0"
+  -- Enter visual mode
+  vim.api.nvim_input "v"
+  -- Move to the next "{" character
+  vim.api.nvim_input "/{<CR>"
+  -- Move to the matching "}" character
+  vim.api.nvim_input "%"
+  vim.api.nvim_input "V"
+end
 
--- M.projektgunnar = {
---   n = {
---     ["<leader>pap"] = { "<cmd>AddNugetToProject<cr>", "Add packages to project" },
---     ["<leader>par"] = { "<cmd>AddProjectToProject<cr>", "Add project reference to other project" },
---     ["<leader>pup"] = { "<cmd>UpdateNugetsInProject<cr>", "Update packages in project" },
---     ["<leader>pus"] = { "<cmd>UpdateNugetsInSolution<cr>", "Update packages in solution" },
---   },
--- }
---
--- M.zenmode = {
---   n = {
---     ["<leader>z"] = {
---       function()
---         require("zen-mode").toggle()
---       end,
---       "toggle zen mode",
---     },
---   },
--- }
---
--- M.todocomments = {
---   n = {
---     ["<leader>tc"] = { "<cmd>TodoTelescope<cr>", "toggle todo comments" },
---   },
--- }
---
--- M.minifiles = {
---   plugin = true,
---
---   n = {
---     ["<C-n>"] = {
---       function()
---         require("mini.files").open()
---       end,
---       "open file browser",
---     },
---     -- find the mappings in the setup of the plugin in plugins.lua
---   },
--- }
---
--- M.minimove = {
---   n = {
---     ["<A-Left>"] = {
---       function()
---         require("mini.move").move_line "left"
---       end,
---       "move line left",
---     },
---     ["<A-Right>"] = {
---       function()
---         require("mini.move").move_line "right"
---       end,
---       "move line right",
---     },
---     ["<A-Down>"] = {
---       function()
---         require("mini.move").move_line "down"
---       end,
---       "move line down",
---     },
---     ["<A-Up>"] = {
---       function()
---         require("mini.move").move_line "up"
---       end,
---       "move line up",
---     },
---   },
---   v = {
---     ["<A-Left>"] = {
---       function()
---         require("mini.move").move_selection "left"
---       end,
---       "move selection left",
---     },
---     ["<A-Right>"] = {
---       function()
---         require("mini.move").move_selection "right"
---       end,
---       "move selection right",
---     },
---     ["<A-Down>"] = {
---       function()
---         require("mini.move").move_selection "down"
---       end,
---       "move selection down",
---     },
---     ["<A-Up>"] = {
---       function()
---         require("mini.move").move_selection "up"
---       end,
---       "move selection up",
---     },
---   },
--- }
---
--- M.copilot = {
---   -- Only here for the cheatsheet
---   i = {
---     ["<A-l>"] = { "", "complete suggestion from copilot" },
---   },
--- }
---
--- M.trouble = {
---   n = {
---     ["<leader>ww"] = {
---       function()
---         require("trouble").open "workspace_diagnostics"
---       end,
---       "toggle trouble with workspace diagnostics",
---       opts = { silent = true, noremap = true },
---     },
---   },
--- }
+-- vim.api.nvim_set_keymap('n', '<leader>ff', ':lua HighlightCSharpMethod()<CR>', { noremap = true, silent = true })
+map("n", "<leader>aa", ":lua HighlightCSharpMethod()<CR>", { noremap = true, silent = true })
+-- map("n", "<leader>aa", "<cmd>Telescope find_files<cr>", { desc = "Telescope Find files" })
+map("n", "<F12>", "<Cmd>lua vim.lsp.buf.definition()<CR>", opts)
+map("n", "K", "<Cmd>lua vim.lsp.buf.hover()<CR>", opts)
+map("n", "gr", "<cmd>Telescope lsp_references<CR>", opts)
+map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+map("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+map("n", "<leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
+map("n", "<leader>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
+map("n", "<leader>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", opts)
+map("n", "<leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
+map("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+map("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
 
-M.dap = {
-  n = {
-    ["<F5>"] = {
-      function()
-        require("dap").continue()
-      end,
-      "start/continue to next breakpoint",
-    },
-    ["<F10>"] = {
-      function()
-        require("dap").step_over()
-      end,
-      "step over next line",
-    },
-    ["<F11>"] = {
-      function()
-        require("dap").step_into()
-      end,
-      "step into method",
-    },
-    ["<F12>"] = {
-      function()
-        require("dap").step_out()
-      end,
-      "step out of method",
-    },
-    ["<F9>"] = {
-      function()
-        require("dap").toggle_breakpoint()
-      end,
-      "toggle breakpoint",
-    },
-  },
-}
+map("n", ";", ":", { desc = "CMD enter command mode" })
 
--- M.harpoon = {
---   n = {
---     ["<leader>ha"] = {
---       function()
---         require("harpoon.mark").add_file()
---       end,
---       "add file to harpoon",
---     },
---     ["<leader>hu"] = {
---       function()
---         require("harpoon.ui").toggle_quick_menu()
---       end,
---       "toggle harpoon quick menu",
---     },
---     ["<C-1>"] = {
---       function()
---         require("harpoon.ui").nav_file(1)
---       end,
---       "navigate to file 1",
---     },
---     ["<C-2>"] = {
---       function()
---         require("harpoon.ui").nav_file(2)
---       end,
---       "navigate to file 2",
---     },
---     ["<C-3>"] = {
---       function()
---         require("harpoon.ui").nav_file(3)
---       end,
---       "navigate to file 3",
---     },
---     ["<C-4>"] = {
---       function()
---         require("harpoon.ui").nav_file(4)
---       end,
---       "navigate to file 4",
---     },
---   },
--- }
---
--- M.neotest = {
---   n = {
---     -- Run tests
---     ["<leader>tt"] = {
---       function()
---         require("neotest").run.run()
---       end,
---       "run neastest test",
---     },
---     ["<leader>ta"] = {
---       function()
---         require("neotest").run.run(vim.fn.expand "%")
---         require("neotest").summary.open()
---       end,
---       "run tests in current file",
---     },
---     ["<leader>tdb"] = {
---       function()
---         require("neotest").run.run { strategy = "dap" }
---       end,
---       "debug nearest test",
---     },
---   },
--- }
+-- Add a keymap for Shift+Tab to switch to the previous buffer
+map("n", "<S-Tab>", ":b#<CR>", opts)
 
-M.lspconfig = {
-  plugin = true,
+-- Map the custom function to a key
+map("n", "T", "<Cmd>Telescope buffers<CR>", { noremap = true, silent = true, desc = "open buffers" })
 
-  n = {
-    ["<leader>ca"] = {
-      function()
-        require("actions-preview").code_actions()
-      end,
-      "lsp code_action",
-    },
-  },
-}
+-- close other buffers
+function CloseOtherBuffers()
+  local current_buf = vim.api.nvim_get_current_buf()
+  local buffers = vim.api.nvim_list_bufs()
 
-return M
+  for _, buf in ipairs(buffers) do
+    if buf ~= current_buf and vim.api.nvim_buf_is_valid(buf) then
+      vim.api.nvim_buf_delete(buf, { force = true })
+    end
+  end
+end
+
+vim.api.nvim_create_user_command("CloseOtherBuffers", CloseOtherBuffers, {})
+map('n', '<leader>co', ':CloseOtherBuffers<CR>', { noremap=true, silent=true, desc = "close other buffers" })
+
+-- Define a function to toggle comments
+function ToggleComment()
+  require('Comment.api').toggle.linewise.current()
+end
+
+-- Create a command for it
+vim.api.nvim_create_user_command('ToggleComment', ToggleComment, {})
+
+-- Map Ctrl-k followed by c to toggle comments
+vim.api.nvim_set_keymap('n', '<C-k>c', ':ToggleComment<CR>', { noremap=true, silent=true })
+vim.api.nvim_set_keymap('n', '<C-k><C-c>', ':ToggleComment<CR>', { noremap=true, silent=true })

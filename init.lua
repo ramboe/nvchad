@@ -42,24 +42,35 @@ vim.schedule(function()
   require "mappings"
 end)
 
+require'nvim-tree'.setup {
+  view = {
+    -- side = 'right',
+    side = 'left',
+    width = 45
+
+  }
+}
+
+require('Comment').setup()
+
 -- DAP for dotnet
 
-local dap = require('dap')
-
-dap.adapters.coreclr = {
-  type = 'executable',
-  command = '/usr/local/bin/netcoredbg/netcoredbg',
-  args = {'--interpreter=vscode'}
-}
-
-dap.configurations.cs = {
-  {
-    type = "coreclr",
-    name = "launch - netcoredbg",
-    request = "launch",
-    program = function()
-      -- return vim.fn.input('Path to dll', vim.fn.getcwd() .. '/bin/Debug/', 'file')
-      return "/home/ramboe/repos/my-dotnet/bin/Debug/net8.0/my-dotnet.dll"
-end,
-  },
-}
+-- local dap = require('dap')
+--
+-- dap.adapters.coreclr = {
+--   type = 'executable',
+--   command = '/usr/local/bin/netcoredbg/netcoredbg',
+--   args = {'--interpreter=vscode'}
+-- }
+--
+-- dap.configurations.cs = {
+--   {
+--     type = "coreclr",
+--     name = "launch - netcoredbg",
+--     request = "launch",
+--     program = function()
+--       -- return vim.fn.input('Path to dll', vim.fn.getcwd() .. '/bin/Debug/', 'file')
+--       return "/home/ramboe/repos/my-dotnet/bin/Debug/net8.0/my-dotnet.dll"
+-- end,
+--   },
+-- }

@@ -15,14 +15,17 @@ return {
       require "configs.lspconfig"
     end,
   },
-  { "nvim-neotest/nvim-nio" },
 
   {
     "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
-        "lua-language-server", "stylua",
-        "html-lsp", "css-lsp", "prettier"
+        "lua-language-server",
+        "stylua",
+        "bicep-lsp",
+        "html-lsp",
+        "css-lsp",
+        "prettier",
       },
     },
   },
@@ -31,8 +34,24 @@ return {
     "nvim-treesitter/nvim-treesitter",
     opts = {
       ensure_installed = {
-        "vim", "lua", "vimdoc",
-        "html", "css", "c_sharp"
+        "vim",
+        "lua",
+        "vimdoc",
+        "html",
+        "css",
+        "c_sharp",
+      },
+    },
+  },
+  {
+    "numToStr/Comment.nvim",
+    lazy = false,
+    opts = {
+      toggler = {
+        ---Line-comment toggle keymap
+        line = "gcc",
+        ---Block-comment toggle keymap
+        block = "gbc",
       },
     },
   },
@@ -48,6 +67,7 @@ return {
     end,
     event = "VeryLazy",
   },
+  { "nvim-neotest/nvim-nio" },
   {
     -- UI for debugging
     "rcarriga/nvim-dap-ui",
@@ -58,4 +78,13 @@ return {
       require "configs.nvim-dap-ui"
     end,
   },
+  {
+    "kaiwalter/azure-functions.nvim",
+    config = function()
+      require("azure-functions").setup {
+        compress_log = true,
+      }
+    end,
+    lazy = false,
+  }
 }
