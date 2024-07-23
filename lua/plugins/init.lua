@@ -43,6 +43,7 @@ return {
       },
     },
   },
+  -- {"akinsho/bufferline.nvim"},
   {
     "numToStr/Comment.nvim",
     lazy = false,
@@ -86,5 +87,5 @@ return {
       }
     end,
     lazy = false,
-  }
+  },
 }
