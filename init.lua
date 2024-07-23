@@ -31,16 +31,18 @@ require("lazy").setup({
   { import = "plugins" },
 }, lazy_config)
 
-require'nvim-tree'.setup {
+require("nvim-tree").setup {
+  diagnostigs = {
+    enable = true,
+  },
   view = {
     -- side = 'right',
-    side = 'left',
-    width = 45
-
-  }
+    side = "right",
+    width = 45,
+  },
 }
 
-require('Comment').setup()
+require("Comment").setup()
 
 -- ./home/ramboe/.local/share/nvim/mason/packages/bicep-lsp/extension/bicepLanguageServer/Bicep.LangServer.dll
 
