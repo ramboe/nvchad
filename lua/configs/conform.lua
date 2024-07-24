@@ -12,4 +12,16 @@ local options = {
   -- },
 }
 
-require("conform").setup(options)
+local opts = {
+  formatters_by_ft = {
+    cs = { "csharpier" },
+  },
+  formatters = {
+    csharpier = {
+      command = "dotnet-csharpier",
+      args = { "--write-stdout" },
+    },
+  },
+}
+
+require("conform").setup(opts)
