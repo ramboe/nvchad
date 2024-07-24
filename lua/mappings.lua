@@ -33,6 +33,7 @@ map("n", "<leader>aa", ":lua HighlightCSharpMethod()<CR>", { noremap = true, sil
 map("n", "<F12>", "<Cmd>lua vim.lsp.buf.definition()<CR>", opts)
 map("n", "K", "<Cmd>lua vim.lsp.buf.hover()<CR>", opts)
 map("n", "gr", "<cmd>Telescope lsp_references<CR>", opts)
+map("n", "gR", "<cmd>Telescope lsp_references<CR>", opts)
 map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
 map("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
 map("n", "<leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
