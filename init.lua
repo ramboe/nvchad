@@ -236,16 +236,12 @@ require "nvchad.autocmds"
 
 vim.schedule(function()
   require "mappings"
+  require "options"
 end)
 
--- vim.cmd [[
--- augroup lsp
---     autocmd!
---     autocmd FileType bicep setlocal omnifunc=v:lua.vim.lsp.omnifunc
--- augroup END
--- ]]
---
 
+-- override color of inactive relative line numbers
+vim.cmd([[highlight LineNr guifg=#958970 gui=NONE]])
 
 
 function clemens_highlight()
