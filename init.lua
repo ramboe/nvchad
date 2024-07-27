@@ -242,10 +242,58 @@ end)
 
 -- override color of inactive relative line numbers
 -- https://www.color-hex.com/color/d5c4a1
+--
 vim.cmd([[highlight LineNr guifg=#958970 gui=NONE]])
 
 
 function clemens_highlight()
+  -- Get the current buffer's filename
+  local filename = vim.fn.expand('%:t') -- Get the filename without the path
+
+  -- Capture the list of files from git status and extract filenames
+  local handle = io.popen(
+    'git status --porcelain=v2 | sed -E \'s/[0-9]{6} [0-9]{6} [0-9]{6} [a-f0-9]{40} [a-f0-9]{40} //\' | awk -F\'[[:space:]]\' \'{print $(NF)}\' | awk -F\'/\' \'{print $NF}\'')
+  local files_to_highlight = handle:read("*a")
+  handle:close()
+
+  -- Split the output into lines
+  local file_list = {}
+  for file in files_to_highlight:gmatch("[^\r\n]+") do
+    table.insert(file_list, file)
+  end
+
+  -- Start with the tree command
+  local cmd = 'tree -I "bin|obj" -F'
+
+  -- Add existing highlighting for the current filename
+  cmd = cmd .. ' | sed "s/' .. filename .. '/\\x1b[1m& \\x1b[0m/g"'
+  cmd = cmd .. ' | sed "s/' .. filename .. '/\\x1b[1m& <<\\x1b[0m/g"'
+
+  -- Add highlighting for additional files
+  for _, file in ipairs(file_list) do
+    cmd = cmd .. ' | sed "s/' .. file .. '/\\x1b[32m&\\x1b[0m/g"'
+  end
+
+  -- Open a new vertical split terminal and execute the command
+  vim.api.nvim_command('vnew')                               -- Open a vertical split
+  vim.api.nvim_command('setlocal nobuflisted noswapfile buftype=nofile bufhidden=wipe')
+  vim.api.nvim_command('setlocal nonumber norelativenumber') -- Disable line numbers
+
+  local term_buf = vim.api.nvim_get_current_buf()
+  local term_id = vim.fn.termopen(cmd, {
+    on_exit = function()
+      vim.api.nvim_buf_set_lines(term_buf, -2, -1, false, {})
+    end
+  })
+
+  -- Define key mapping to close the terminal with 'q'
+  vim.api.nvim_buf_set_keymap(term_buf, 'n', 'q', ':bwipeout!<CR>', { noremap = true, silent = true })
+
+  -- Start in insert mode
+  vim.api.nvim_command('startinsert')
+end
+
+function clemens_highlight_old()
   -- Get the current buffer's filename
   local filename = vim.fn.expand('%:t') -- Get the filename without the path
 
