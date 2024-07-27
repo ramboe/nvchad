@@ -241,6 +241,7 @@ end)
 
 
 -- override color of inactive relative line numbers
+-- https://www.color-hex.com/color/d5c4a1
 vim.cmd([[highlight LineNr guifg=#958970 gui=NONE]])
 
 
