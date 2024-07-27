@@ -45,7 +45,8 @@ map("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
 
 -- map("n", "<leader>e", "<cmd>NvimTreeFindFile<CR>", opts)
 -- map("n", "<A-^[OP>", "<cmd>NvimTreeFindFile<CR>", opts)
-map("n", "<A-a>", "<cmd>NvimTreeFindFile<CR>", opts)
+-- map("n", "<A-a>", "<cmd>NvimTreeFindFile<CR>", opts)
+map("n", "<A-a>", "<cmd>Oil<CR>", opts)
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 
@@ -81,3 +82,8 @@ vim.api.nvim_create_user_command('ToggleComment', ToggleComment, {})
 -- Map Ctrl-k followed by c to toggle comments
 vim.api.nvim_set_keymap('n', '<C-k>c', ':ToggleComment<CR>', { noremap=true, silent=true })
 vim.api.nvim_set_keymap('n', '<C-k><C-c>', ':ToggleComment<CR>', { noremap=true, silent=true })
+
+-- Show File in Tree
+
+
+map("n", "<leader>e", "<cmd>HighlightInTree<CR>", opts)

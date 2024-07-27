@@ -1,4 +1,4 @@
--- EXAMPLE 
+-- EXAMPLE
 local on_attach = require("nvchad.configs.lspconfig").on_attach
 local on_init = require("nvchad.configs.lspconfig").on_init
 local capabilities = require("nvchad.configs.lspconfig").capabilities
@@ -19,7 +19,7 @@ end
 -- lspconfig.tsserver.setup {
 --   on_attach = on_attach,
 --   on_init = on_init,
---   -- autocmd BufNewFile, BufRead *.bicep set filetype=bicep  
+--   -- autocmd BufNewFile, BufRead *.bicep set filetype=bicep
 --   capabilities = capabilities
 -- }
 
@@ -29,15 +29,20 @@ lspconfig.ansiblels.setup({
   capabilities = capabilities
 })
 
-local bicep_lsp_bin = "./home/ramboe/.local/share/nvim/mason/packages/bicep-lsp/extension/bicepLanguageServer/Bicep.LangServer.dll"
+
 vim.cmd([[ autocmd BufNewFile,BufRead *.bicep set filetype=bicep ]])
+
+lspconfig.bicep.setup {}
+
+local bicep_lsp_bin =
+"/home/ramboe/.local/share/nvim/mason/packages/bicep-lsp/extension/bicepLanguageServer/Bicep.LangServer.dll"
 
 lspconfig.bicep.setup({
   on_attach = on_attach,
   on_init = on_init,
   capabilities = capabilities,
-cmd = { "dotnet", bicep_lsp_bin },
-  filetypes = {"bicep"}
+  cmd = { "dotnet", bicep_lsp_bin },
+  filetypes = { "bicep" }
 })
 
 
@@ -46,15 +51,15 @@ lspconfig.dockerls.setup({
   on_attach = on_attach,
   on_init = on_init,
   capabilities = capabilities,
-  filetypes = {"Dockerfile"}
+  filetypes = { "Dockerfile" }
 })
 
 lspconfig.csharp_ls.setup({
   on_attach = on_attach,
   on_init = on_init,
   capabilities = capabilities,
-cmd = {"csharp-ls" },
-  filetypes = {"cs"}
+  cmd = { "csharp-ls" },
+  filetypes = { "cs" }
 })
 --
 --
