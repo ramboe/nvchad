@@ -86,4 +86,4 @@ vim.api.nvim_set_keymap('n', '<C-k><C-c>', ':ToggleComment<CR>', { noremap=true,
 -- Show File in Tree
 
 
-map("n", "<leader>e", "<cmd>HighlightInTree<CR>", opts)
+map("n", "<leader>e", "<cmd>ShowFileInTree<CR>", opts)

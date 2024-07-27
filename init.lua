@@ -250,10 +250,26 @@ function clemens_highlight()
   -- Get the current buffer's filename
   local filename = vim.fn.expand('%:t') -- Get the filename without the path
 
-  -- Capture the list of files from git status and extract filenames
-  -- local handle_added_files = io.popen(
-  --   'git status --porcelain=v2 | sed -E \'s/[0-9]{6} [0-9]{6} [0-9]{6} [a-f0-9]{40} [a-f0-9]{40} //\' | awk -F\'[[:space:]]\' \'{print $(NF)}\' | awk -F\'/\' \'{print $NF}\'')
+  -- Helper function to run git status and get a list of filenames
+  local function get_git_filenames(grep_pattern)
+    local handle = io.popen(
+      'git status --porcelain=v2 | sed -E \'s/[0-9]{6} [0-9]{6} [0-9]{6} [a-f0-9]{40} [a-f0-9]{40} //\' | grep "' ..
+      grep_pattern .. '" | awk -F\'[[:space:]]\' \'{print $(NF)}\' | awk -F\'/\' \'{print $NF}\''
+    )
+    local result = handle:read("*a")
+    handle:close()
 
+    -- Split the output into lines
+    local file_list = {}
+    for file in result:gmatch("[^\r\n]+") do
+      table.insert(file_list, file)
+    end
+    return file_list
+  end
+
+  -- Get the list of filenames to highlight in green and red
+  local files_to_highlight_green = get_git_filenames("M. ")
+  local files_to_highlight_red = get_git_filenames(".M ")
 
   -- Start with the tree command
   local cmd = 'tree -I "bin|obj" -F'
@@ -262,78 +278,16 @@ function clemens_highlight()
   cmd = cmd .. ' | sed "s/' .. filename .. '/\\x1b[1m& \\x1b[0m/g"'
   cmd = cmd .. ' | sed "s/' .. filename .. '/\\x1b[1m& <<\\x1b[0m/g"'
 
-  --- GREEN
-
-  local handle_added_files = io.popen(
-    'git status --porcelain=v2 | sed -E \'s/[0-9]{6} [0-9]{6} [0-9]{6} [a-f0-9]{40} [a-f0-9]{40} //\' | grep "M. " | awk -F\'[[:space:]]\' \'{print $(NF)}\' | awk -F\'/\' \'{print $NF}\'')
-
-  local files_to_highlight_green = handle_added_files:read("*a")
-
-  handle_added_files:close()
-
-  -- Split the output into lines
-  local file_list_green = {}
-  for file in files_to_highlight_green:gmatch("[^\r\n]+") do
-    table.insert(file_list_green, file)
-  end
-
-
-  --- RED
-
-  local handle_notyet_added_files = io.popen(
-    'git status --porcelain=v2 | sed -E \'s/[0-9]{6} [0-9]{6} [0-9]{6} [a-f0-9]{40} [a-f0-9]{40} //\' | grep ".M " | awk -F\'[[:space:]]\' \'{print $(NF)}\' | awk -F\'/\' \'{print $NF}\'')
-
-  local files_to_highlight_red = handle_notyet_added_files:read("*a")
-
-  handle_notyet_added_files:close()
-
-  -- Split the output into lines
-  local file_list_red = {}
-
-  for file in files_to_highlight_red:gmatch("[^\r\n]+") do
-    table.insert(file_list_red, file)
-  end
-
-
-  -- Add highlighting for additional files
-  for _, file in ipairs(file_list_green) do
-    cmd = cmd .. ' | sed "s/' .. file .. '/\\x1b[32m&\\x1b[0m/g"'
-  end
-
-  -- Add highlighting for additional files
-  for _, file in ipairs(file_list_red) do
-    -- cmd = cmd .. ' | sed "s/' .. file .. '/\\x1b[32m&\\x1b[0m/g"'
-
-    cmd = cmd .. ' | sed "s/' .. file .. '/\\x1b[31m&\\x1b[0m/g"'
-  end
-  -- Open a new vertical split terminal and execute the command
-  vim.api.nvim_command('vnew')                               -- Open a vertical split
-  vim.api.nvim_command('setlocal nobuflisted noswapfile buftype=nofile bufhidden=wipe')
-  vim.api.nvim_command('setlocal nonumber norelativenumber') -- Disable line numbers
-
-  local term_buf = vim.api.nvim_get_current_buf()
-  local term_id = vim.fn.termopen(cmd, {
-    on_exit = function()
-      vim.api.nvim_buf_set_lines(term_buf, -2, -1, false, {})
+  -- Helper function to add highlighting for a list of files
+  local function add_highlighting(file_list, color_code)
+    for _, file in ipairs(file_list) do
+      cmd = cmd .. ' | sed "s/' .. file .. '/\\x1b[' .. color_code .. 'm&\\x1b[0m/g"'
     end
-  })
+  end
 
-  -- Define key mapping to close the terminal with 'q'
-  vim.api.nvim_buf_set_keymap(term_buf, 'n', 'q', ':bwipeout!<CR>', { noremap = true, silent = true })
-
-  -- Start in insert mode
-  vim.api.nvim_command('startinsert')
-end
-
-function clemens_highlight_old()
-  -- Get the current buffer's filename
-  local filename = vim.fn.expand('%:t') -- Get the filename without the path
-
-  -- Construct the command to run `tree`, highlight the filename, and add " <<" at the end of the filename
-  local cmd = string.format(
-    'tree -I "bin|obj" -F | sed "s/%s/\\x1b[1m& \\x1b[0m/g" | sed "s/%s/\\x1b[1m& <<\\x1b[0m/g"',
-    filename, filename
-  )
+  -- Add highlighting for green and red files
+  add_highlighting(files_to_highlight_green, "32") -- green
+  add_highlighting(files_to_highlight_red, "31")   -- red
 
   -- Open a new vertical split terminal and execute the command
   vim.api.nvim_command('vnew')                               -- Open a vertical split
@@ -355,4 +309,4 @@ function clemens_highlight_old()
 end
 
 -- Create a command to call the function
-vim.api.nvim_command('command! HighlightInTree lua clemens_highlight()')
+vim.api.nvim_command('command! ShowFileInTree lua clemens_highlight()')
