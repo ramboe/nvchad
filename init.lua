@@ -251,16 +251,9 @@ function clemens_highlight()
   local filename = vim.fn.expand('%:t') -- Get the filename without the path
 
   -- Capture the list of files from git status and extract filenames
-  local handle = io.popen(
-    'git status --porcelain=v2 | sed -E \'s/[0-9]{6} [0-9]{6} [0-9]{6} [a-f0-9]{40} [a-f0-9]{40} //\' | awk -F\'[[:space:]]\' \'{print $(NF)}\' | awk -F\'/\' \'{print $NF}\'')
-  local files_to_highlight = handle:read("*a")
-  handle:close()
+  -- local handle_added_files = io.popen(
+  --   'git status --porcelain=v2 | sed -E \'s/[0-9]{6} [0-9]{6} [0-9]{6} [a-f0-9]{40} [a-f0-9]{40} //\' | awk -F\'[[:space:]]\' \'{print $(NF)}\' | awk -F\'/\' \'{print $NF}\'')
 
-  -- Split the output into lines
-  local file_list = {}
-  for file in files_to_highlight:gmatch("[^\r\n]+") do
-    table.insert(file_list, file)
-  end
 
   -- Start with the tree command
   local cmd = 'tree -I "bin|obj" -F'
@@ -269,11 +262,50 @@ function clemens_highlight()
   cmd = cmd .. ' | sed "s/' .. filename .. '/\\x1b[1m& \\x1b[0m/g"'
   cmd = cmd .. ' | sed "s/' .. filename .. '/\\x1b[1m& <<\\x1b[0m/g"'
 
+  --- GREEN
+
+  local handle_added_files = io.popen(
+    'git status --porcelain=v2 | sed -E \'s/[0-9]{6} [0-9]{6} [0-9]{6} [a-f0-9]{40} [a-f0-9]{40} //\' | grep "M. " | awk -F\'[[:space:]]\' \'{print $(NF)}\' | awk -F\'/\' \'{print $NF}\'')
+
+  local files_to_highlight_green = handle_added_files:read("*a")
+
+  handle_added_files:close()
+
+  -- Split the output into lines
+  local file_list_green = {}
+  for file in files_to_highlight_green:gmatch("[^\r\n]+") do
+    table.insert(file_list_green, file)
+  end
+
+
+  --- RED
+
+  local handle_notyet_added_files = io.popen(
+    'git status --porcelain=v2 | sed -E \'s/[0-9]{6} [0-9]{6} [0-9]{6} [a-f0-9]{40} [a-f0-9]{40} //\' | grep ".M " | awk -F\'[[:space:]]\' \'{print $(NF)}\' | awk -F\'/\' \'{print $NF}\'')
+
+  local files_to_highlight_red = handle_notyet_added_files:read("*a")
+
+  handle_notyet_added_files:close()
+
+  -- Split the output into lines
+  local file_list_red = {}
+
+  for file in files_to_highlight_red:gmatch("[^\r\n]+") do
+    table.insert(file_list_red, file)
+  end
+
+
   -- Add highlighting for additional files
-  for _, file in ipairs(file_list) do
+  for _, file in ipairs(file_list_green) do
     cmd = cmd .. ' | sed "s/' .. file .. '/\\x1b[32m&\\x1b[0m/g"'
   end
 
+  -- Add highlighting for additional files
+  for _, file in ipairs(file_list_red) do
+    -- cmd = cmd .. ' | sed "s/' .. file .. '/\\x1b[32m&\\x1b[0m/g"'
+
+    cmd = cmd .. ' | sed "s/' .. file .. '/\\x1b[31m&\\x1b[0m/g"'
+  end
   -- Open a new vertical split terminal and execute the command
   vim.api.nvim_command('vnew')                               -- Open a vertical split
   vim.api.nvim_command('setlocal nobuflisted noswapfile buftype=nofile bufhidden=wipe')
