@@ -13,7 +13,6 @@ vim.opt.rtp:prepend(lazypath)
 
 local lazy_config = require "configs.lazy"
 
--- vim.cmd [[ autocmd BufNewFile,BufRead *.bicep set filetype=bicep ]]
 -- require'lspconfig'.bicep.setup{}
 
 -- load plugins
@@ -331,3 +330,17 @@ end
 -- Example usage to get the font color for 'Normal'
 local font_color = get_font_color('Normal')
 print("Font color for 'Normal': " .. font_color)
+
+
+
+-- FOLDING
+
+local opt = vim.opt
+
+opt.foldmethod = "expr"
+
+opt.foldexpr = "nvim_treesitter#foldexpr()"opt.foldmethod = "expr"
+opt.foldexpr = "nvim_treesitter#foldexpr()"
+
+-- opt.nofoldenable = true
+opt.foldlevelstart = 99
