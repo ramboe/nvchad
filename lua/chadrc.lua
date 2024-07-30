@@ -5,7 +5,7 @@
 local M = {}
 
 M.ui = {
-	theme = "jetbrains-rider",
+	theme = "catppuccin",
 
 	-- hl_override = {
 	-- 	Comment = { italic = true },
