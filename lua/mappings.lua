@@ -29,11 +29,13 @@ end
 
 -- vim.api.nvim_set_keymap('n', '<leader>ff', ':lua HighlightCSharpMethod()<CR>', { noremap = true, silent = true })
 map("n", "<leader>aa", ":lua HighlightCSharpMethod()<CR>", { noremap = true, silent = true })
+map('v', '<leader>as', ':Gen Summarize_Function<CR>')
 -- map("n", "<leader>aa", "<cmd>Telescope find_files<cr>", { desc = "Telescope Find files" })
 map("n", "<F12>", "<Cmd>lua vim.lsp.buf.definition()<CR>", opts)
 map("n", "K", "<Cmd>lua vim.lsp.buf.hover()<CR>", opts)
 map("n", "gr", "<cmd>Telescope lsp_references<CR>", opts)
 map("n", "gR", "<cmd>Telescope lsp_references<CR>", opts)
+map("n", "<leader>fs", "<cmd>Telescope lsp_document_symbols<CR>", opts)
 map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
 map("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
 map("n", "<leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
@@ -69,7 +71,7 @@ function CloseOtherBuffers()
 end
 
 vim.api.nvim_create_user_command("CloseOtherBuffers", CloseOtherBuffers, {})
-map('n', '<leader>co', ':CloseOtherBuffers<CR>', { noremap=true, silent=true, desc = "close other buffers" })
+map('n', '<leader>co', ':CloseOtherBuffers<CR>', { noremap = true, silent = true, desc = "close other buffers" })
 
 -- Define a function to toggle comments
 function ToggleComment()
@@ -80,8 +82,8 @@ end
 vim.api.nvim_create_user_command('ToggleComment', ToggleComment, {})
 
 -- Map Ctrl-k followed by c to toggle comments
-vim.api.nvim_set_keymap('n', '<C-k>c', ':ToggleComment<CR>', { noremap=true, silent=true })
-vim.api.nvim_set_keymap('n', '<C-k><C-c>', ':ToggleComment<CR>', { noremap=true, silent=true })
+vim.api.nvim_set_keymap('n', '<C-k>c', ':ToggleComment<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<C-k><C-c>', ':ToggleComment<CR>', { noremap = true, silent = true })
 
 -- Show File in Tree
 
