@@ -90,3 +90,60 @@ require("custom-config.luasnip")
 
 vim.api.nvim_command('Oil')                                            -- Open Oil file tree on startup
 vim.api.nvim_command('autocmd FileType * setlocal formatoptions-=cro') -- prevent from proceeding with comment
+
+
+-- -- yeeeeah
+--
+-- local cmd = vim.cmd  -- For executing Vim commands
+-- local fn = vim.fn    -- The nvim function API
+-- local api = vim.api  -- The nvim api
+--
+-- -- Function to execute the Bash script and capture its output
+-- local function get_commit()
+--   local handle = io.popen("get-commit")
+--   if not handle then
+--     print("Failed to run get-commit script")
+--     return ""
+--   end
+--   local result = handle:read("*a")
+--   handle:close()
+--   return result
+-- end
+--
+-- -- Function to create a floating window and display the output
+-- local function show_output_in_float_window(output)
+--   -- Create a new float win with some dimensions and position
+--   local width = fn.winwidth(0) - 2
+--   local height = 10
+--   local row = (fn.winheight(0) - height) / 2
+--   local col = (fn.winwidth(0) - width) / 2
+--
+--   -- Create the float window
+--   api.nvim_command('botright new')
+--   api.nvim_buf_set_option(0, 'filetype', 'markdown')
+--  api.nvim_win_set_config(0, { relative: 'editor', row = row, col = col, width = width, height = height })
+--
+--   -- Set the content of the float window
+--   vim.api.nvim_buf_set_lines(0, 0, -1, false, { output })
+-- end
+--
+-- -- Main function to execute and display the commit message
+-- local function show_commit()
+--   local output = get_commit()
+--   if output ~= "" then
+--     show_output_in_float_window(output)
+--   else
+--     print("No output from get-commit script")
+--   end
+-- end
+--
+-- -- Command to call the main function when executed in Neovim
+-- cmd('command! ShowCommit lua require"user.get_commit".show_commit()')
+
+
+
+-- Load the commit viewer module
+local commit_viewer = require('commit_viewer')
+
+-- Create a command to show the commit in a floating window
+vim.api.nvim_create_user_command('ShowCommit', commit_viewer.show_commit, {})
