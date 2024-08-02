@@ -4,7 +4,7 @@
 local gen = require "gen"
 
 gen.prompts['Summarize_Function'] = {
-  prompt = "Write a short summary (maximum one paragraph and two sentences) for the following method, start:\n$text",
+  prompt = "Write a very short summary (maximum 1 phrase, keep them short as well) for the following method, start the phrase with '/// ':\n$text",
   replace = false
 }
 

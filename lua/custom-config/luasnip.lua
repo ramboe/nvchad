@@ -35,7 +35,7 @@ local conds = require("luasnip.extras.expand_conditions")
 
 -- summay
 ls.add_snippets("cs", {
-  s("summary", fmt(
+  s("/// summary", fmt(
     [[
 ///<summary>
 /// {}
