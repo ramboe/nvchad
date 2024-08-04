@@ -33,15 +33,16 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = {
-      ensure_installed = {
-        "vim",
-        "lua",
-        "vimdoc",
-        "html",
-        "css",
-        "c_sharp",
-        "bicep"
-      },
+      ensure_installed = "all"
+      -- ensure_installed = {
+      --   "vim",
+      --   "lua",
+      --   "vimdoc",
+      --   "html",
+      --   "css",
+      --   "c_sharp",
+      --   "bicep"
+      -- },
     },
   },
   -- {"akinsho/bufferline.nvim"},
@@ -137,4 +138,8 @@ return {
       debug = false -- Prints errors and the command which is run.
     }
   },
+  {
+    "m4xshen/smartcolumn.nvim",
+    opts = {}
+  }
 }

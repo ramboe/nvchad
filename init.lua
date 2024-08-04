@@ -39,6 +39,7 @@ require("lazy").setup({
 --   },
 -- }
 
+require("smartcolumn").setup()
 require("Comment").setup()
 
 -- load theme
