@@ -39,7 +39,7 @@ require("lazy").setup({
 --   },
 -- }
 
-require("smartcolumn").setup()
+-- require("smartcolumn").setup()
 require("Comment").setup()
 
 -- load theme
@@ -82,6 +82,7 @@ require("custom-config.gen-nvim")
 require("custom-plugins.clemens-tree")
 require("custom-config.oil-config")
 require("custom-config.folding")
+require("custom-config.scrolling")
 
 -- load snippets from path/of/your/nvim/config/my-cool-snippets
 require("luasnip.loaders.from_vscode").lazy_load({ paths = { "./lua/my-cool-snippets" } })
@@ -92,6 +93,11 @@ require("custom-config.luasnip")
 vim.api.nvim_command('Oil')                                            -- Open Oil file tree on startup
 vim.api.nvim_command('autocmd FileType * setlocal formatoptions-=cro') -- prevent from proceeding with comment
 
+require("neotest").setup({
+  adapters = {
+    require("neotest-dotnet")
+  }
+})
 
 -- -- yeeeeah
 --
@@ -148,3 +154,11 @@ local commit_viewer = require('commit_viewer')
 
 -- Create a command to show the commit in a floating window
 vim.api.nvim_create_user_command('ShowCommit', commit_viewer.show_commit, {})
+
+
+
+-- using the command
+vim.api.nvim_set_keymap('n', '<leader>z', '<cmd>Centerpad<cr>', { silent = true, noremap = true })
+
+-- or using the lua function
+vim.api.nvim_set_keymap('n', '<leader>z', "<cmd>lua require'centerpad'.toggle{ leftpad = 55, rightpad = 55 }<cr>", { silent = true, noremap = true })

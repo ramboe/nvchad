@@ -138,8 +138,27 @@ return {
       debug = false -- Prints errors and the command which is run.
     }
   },
+
   {
-    "m4xshen/smartcolumn.nvim",
-    opts = {}
-  }
+    "nvim-neotest/neotest",
+    dependencies = {
+      "nvim-neotest/nvim-nio",
+      "nvim-lua/plenary.nvim",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-treesitter/nvim-treesitter"
+    }
+  },
+
+  {
+    "Issafalcon/neotest-dotnet",
+    lazy = false,
+    dependencies = {
+      "nvim-neotest/neotest"
+    }
+  },
+  { "smithbm2316/centerpad.nvim" }
+  -- {
+  --   "m4xshen/smartcolumn.nvim",
+  --   opts = {}
+  -- }
 }
