@@ -1,7 +1,7 @@
 return {
   {
     "stevearc/conform.nvim",
-    -- event = 'BufWritePre', -- uncomment for format on save
+    event = 'BufWritePre', -- uncomment for format on save
     config = function()
       require "configs.conform"
     end,
@@ -21,11 +21,15 @@ return {
     opts = {
       ensure_installed = {
         "lua-language-server",
+        "csharp-language-server",
         "stylua",
         "bicep-lsp",
         "html-lsp",
         "css-lsp",
-        "prettier",
+        "eslint-lsp",
+        "typescript-language-server",
+        "csharpier",
+        "prettier"
       },
     },
   },
@@ -108,7 +112,7 @@ return {
     dependencies = { "rafamadriz/friendly-snippets" }
   },
 
-  -- Custom Parameters (with defaults)
+  -- integrate into local ai
   {
     "David-Kunz/gen.nvim",
     lazy = false,
