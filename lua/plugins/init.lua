@@ -29,7 +29,8 @@ return {
         "eslint-lsp",
         "typescript-language-server",
         "csharpier",
-        "prettier"
+        "prettier",
+        "json-lsp"
       },
     },
   },
